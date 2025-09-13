@@ -32,13 +32,9 @@ jobs:
           git pull origin production
 
           # Executa os scripts de build
-          cd consumer
           chmod +x build.sh
           ./build.sh
           
-          cd ../producer
-          chmod +x build.sh
-          ./build.sh
       env:
           key: ${{secrets.SSH_PRIVATE_KEY_PROD}}
           host: ${{secrets.REMOTE_HOST_PROD}}

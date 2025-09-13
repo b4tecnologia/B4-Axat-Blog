@@ -30,7 +30,7 @@ jobs:
           git reset --hard origin/homolog
           git checkout homolog
           git pull origin homolog
-
+          chmod +x build.sh
           ./build.sh
 
       env:

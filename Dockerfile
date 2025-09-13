@@ -26,8 +26,6 @@ RUN mkdir -p /opt/app/node_modules/@strapi/admin/dist/server/server/build && \
 # Remover dependências de desenvolvimento
 RUN npm prune --omit=dev
 
-RUN chmod +x build.sh
-
 # Expor porta
 EXPOSE 1337
 
