@@ -1,0 +1,46 @@
+name: Deploy Dos RPAs de TJ Bots B4 No Servidor De Homologacao Unifique
+
+on: 
+  push:
+    branches:
+          - production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.REMOTE_HOST_PROD }}
+        username: ${{ secrets.REMOTE_USER_PROD }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+        port: ${{ secrets.PORT_PROD }}
+        script: |
+          cd /opt/apps
+          # Clone o repositório se não existir
+          if [ ! -d "${{ secrets.REPO_NAME }}" ]; then
+            git clone -b production "${{ secrets.REPO_URL }}" ${{ secrets.REPO_NAME }}
+          fi
+          
+          # Atualiza o repositório
+          cd ${{ secrets.REPO_NAME }}
+          git fetch origin
+          git reset --hard origin/production
+          git checkout production
+          git pull origin production
+
+          # Executa os scripts de build
+          cd consumer
+          chmod +x build.sh
+          ./build.sh
+          
+          cd ../producer
+          chmod +x build.sh
+          ./build.sh
+      env:
+          key: ${{secrets.SSH_PRIVATE_KEY_PROD}}
+          host: ${{secrets.REMOTE_HOST_PROD}}
+          username: ${{secrets.REMOTE_USER_PROD}}
+          REPO_URL: ${{ secrets.REPO_URL }}
