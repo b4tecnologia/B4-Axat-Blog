@@ -1,6 +1,6 @@
 module.exports = ({ env }) => ({
   auth: {
-    secret: env("ADMIN_JWT_SECRET"),
+    secret: env("ADMIN_JWT_SECRET", 'o4HZmZd8WCdYlxZ6IJS8YA=='),
   },
   locales: ["pt-BR"],
   apiToken: {
