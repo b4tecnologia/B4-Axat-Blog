@@ -3,7 +3,7 @@ version: '3.8'
 services:
   strapi:
     image: strapi:1.0
-    build:
+    build: ./strapi
     container_name: strapi-app
     restart: unless-stopped
     env_file: 
