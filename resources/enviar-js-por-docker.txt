@@ -1,0 +1,50 @@
+docker exec strapi-app sh -c "cat > /opt/app/config/admin.js << 'EOF'
+module.exports = ({ env }) => ({
+  auth: {
+    secret: env('ADMIN_JWT_SECRET', 'o4HZmZd8WCdYlxZ6IJS8YA=='),
+  },
+  locales: ['pt-BR'],
+  apiToken: {
+    salt: env('API_TOKEN_SALT'),
+  },
+  transfer: {
+    token: {
+      salt: env('TRANSFER_TOKEN_SALT'),
+    },
+  },
+  secrets: {
+    encryptionKey: env('ENCRYPTION_KEY'),
+  },
+  flags: {
+    nps: env.bool('FLAG_NPS', true),
+    promoteEE: env.bool('FLAG_PROMOTE_EE', true),
+  },
+  serveAdminPanel: env.bool('SERVE_ADMIN', true),
+  build: {
+    backend: env('STRAPI_ADMIN_BACKEND_URL', 'http://localhost:1337'),
+  },
+});
+EOF"
+
+docker exec strapi-app sh -c "cat > /opt/app/config/plugins.js << 'EOF'
+module.exports = ({ env }) => ({
+  'users-permissions': {
+    config: {
+      jwtSecret: env('JWT_SECRET', '4bfa8fbeb743058eadb24f1ab3160cda'),
+    },
+  },
+});
+EOF"
+
+docker exec strapi-app sh -c "cat > /opt/app/config/server.js << 'EOF'
+module.exports = ({ env }) => ({
+  host: env('HOST', '0.0.0.0'),
+  port: env.int('PORT', 1337),
+  app: {
+    keys: [env('APP_KEYS')],
+  },
+  webhooks: {
+    populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
+  },
+});
+EOF"
