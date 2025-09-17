@@ -20,4 +20,4 @@ RUN mkdir -p public/uploads
 EXPOSE 1337
 
 # Rodar em modo desenvolvimento
-CMD ["npm", "run", "develop", "--", "--host", "0.0.0.0", "--allowed-hosts", "blog.axat.com.br,localhost"]
+CMD ["npm", "run", "develop"]
