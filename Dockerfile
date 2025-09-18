@@ -14,8 +14,7 @@ COPY strapi/ .
 # Create necessary directories and set proper ownership
 RUN mkdir -p public/uploads && \
     mkdir -p src/admin && \
-    mkdir -p src/extensions/documentation && \
-    chown -R node:node /opt/app
+    mkdir -p src/extensions/documentation
 
 # Switch to node user
 USER node
