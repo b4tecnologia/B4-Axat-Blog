@@ -1,29 +1,25 @@
-# Usar imagem oficial do Node.js
 FROM node:18-alpine
 
-# Definir diretório de trabalho
 WORKDIR /opt/app
 
-# Copiar arquivos de dependências
+# Copy package files
 COPY strapi/package*.json ./
 
-# Instalar todas as dependências (incluindo dev)
-RUN npm install && npm cache clean --force
+# Install dependencies
+RUN npm ci --only=production
 
-# Copiar código da aplicação (isso já inclui tudo dentro de strapi/)
+# Copy application files
 COPY strapi/ .
 
-# Criar diretório para uploads
-RUN mkdir -p public/uploads
+# Create necessary directories and set proper ownership
+RUN mkdir -p public/uploads && \
+    mkdir -p src/admin && \
+    mkdir -p src/extensions/documentation && \
+    chown -R node:node /opt/app
 
-# Garantir que o diretório admin existe e tem as permissões corretas
-RUN mkdir -p src/admin && chown -R node:node /opt/app
-
-# Mudar para o usuário node para segurança
+# Switch to node user
 USER node
 
-# Expor porta padrão do Strapi
 EXPOSE 1337
 
-# Rodar em modo desenvolvimento
 CMD ["npm", "run", "develop"]
