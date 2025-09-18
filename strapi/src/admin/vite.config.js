@@ -8,7 +8,7 @@ export default (config) => {
       },
     },
     server: {
-      allowedHosts: 'blog.axat.com.br'
+      allowedHosts: true
     }
   }));
 };
