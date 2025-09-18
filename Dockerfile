@@ -1,24 +1,17 @@
 FROM node:18-alpine
-
+# Definir diretório de trabalho
 WORKDIR /opt/app
-
-# Copy package files
+# Copiar arquivos de dependências
 COPY strapi/package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy application files
+# Instalar todas as dependências (incluindo dev)
+RUN npm install && npm cache clean --force
+# Copiar código da aplicação
 COPY strapi/ .
-
-# Create necessary directories and set proper ownership
-RUN mkdir -p public/uploads && \
-    mkdir -p src/admin && \
-    mkdir -p src/extensions/documentation
-
-# Switch to node user
-USER node
-
+COPY strapi/src/ ./src/
+COPY strapi/src/admin/vite.config.ts .
+# Criar diretório para uploads
+RUN mkdir -p public/uploads
+# Expor porta padrão do Strapi
 EXPOSE 1337
-
+# Rodar em modo desenvolvimento
 CMD ["npm", "run", "develop"]
