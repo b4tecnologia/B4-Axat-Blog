@@ -8,7 +8,7 @@ RUN npm install && npm cache clean --force
 # Copiar código da aplicação
 COPY strapi/ .
 COPY strapi/src/ ./src/
-COPY strapi/src/admin/vite.config.ts .
+COPY strapi/src/admin/vite.config.js ./src/admin/vite.config.js
 # Criar diretório para uploads
 RUN mkdir -p public/uploads
 # Expor porta padrão do Strapi
